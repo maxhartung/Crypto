@@ -8,7 +8,8 @@ int main(int argc, const char * argv[]) {
     
     if (argc == 2){
         cout << "Calea fisierului este: " << "'" << argv[1] << "'";
-        }
+        path = argv[1];
+    }
 
     else
         cout << "Introduceti calea fisierului pentru criptare: " << endl << endl;
