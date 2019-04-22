@@ -63,7 +63,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "C:\test.txt"
+            argument = "/Users/max/file.txt"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
