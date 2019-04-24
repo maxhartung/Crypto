@@ -29,8 +29,9 @@ void save_File(string encrypted_string){
     
     if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
         encrypted_file_path = "C:\encrypted_file.txt";
+        // encrypted_file_path = "%USERPROFILE%\\Desktop\\encrypted_file.txt"; // Trebuie testat daca functioneaza corect si salveaza pe desktop fisierul
     }
-    else {
+    else if(getOsName() == "Mac OSX") {
         encrypted_file_path = "/Users/max/encrypted_file.txt";
     }
     
@@ -40,20 +41,22 @@ void save_File(string encrypted_string){
     
 }
 
+string current_File(){
+    stringstream buffer;
+    buffer << ifstream(path).rdbuf();
+    return buffer.str();
+}
+
 class Encrypt{
 public:
         string caeser_Method(string text, int s){
             string result = "";
-            stringstream buffer;
-            buffer << ifstream(path).rdbuf();
-            buffer.str();
-            
-            for (int i=0;i<buffer.str().length();i++)
+            for (int i=0;i<current_File().length();i++)
             {
-                if (isupper(buffer.str()[i]))
-                    result += char(int(buffer.str()[i]+s-65)%26 +65);
+                if (isupper(current_File()[i]))
+                    result += char(int(current_File()[i]+s-65)%26 +65);
                 else
-                    result += char(int(buffer.str()[i]+s-97)%26 +97);
+                    result += char(int(current_File()[i]+s-97)%26 +97);
             }
             save_File(result);
             return "Fisierul a fost scris cu succes !";
