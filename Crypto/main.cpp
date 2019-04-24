@@ -1,9 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-using namespace std;
 
-string path;
+std::string path;
 
 std::string getOsName()
 {
@@ -24,8 +23,8 @@ std::string getOsName()
 #endif
 }
 
-void save_File(string encrypted_string){
-    string encrypted_file_path;
+void save_File(std::string encrypted_string){
+    std::string encrypted_file_path;
     
     if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
         encrypted_file_path = "C:\encrypted_file.txt";
@@ -41,16 +40,16 @@ void save_File(string encrypted_string){
     
 }
 
-string current_File(){
-    stringstream buffer;
-    buffer << ifstream(path).rdbuf();
+std::string current_File(){
+    std::stringstream buffer;
+    buffer << std::ifstream(path).rdbuf();
     return buffer.str();
 }
 
 class Encrypt{
 public:
-        string caeser_Method(string text, int s){
-            string result = "";
+        std::string caeser_Method(std::string text, int s){
+            std::string result = "";
             for (int i=0;i<current_File().length();i++)
             {
                 if (isupper(current_File()[i]))
@@ -62,7 +61,7 @@ public:
             return "Fisierul a fost scris cu succes !";
         }
     
-        string metoda_lui_peste_prajit(string text){
+        std::string metoda_lui_peste_prajit(std::string text){
         //TODO
         return 0;
     }
@@ -72,13 +71,13 @@ public:
 void show_Options(){
     char option;
 
-    cout << "Alegeti metoda de criptare: " << endl << endl;
+    std::cout << "Alegeti metoda de criptare: " << std::endl << std::endl;
     
-    cout << "1. Metoda la ala francez" << endl;
-    cout << "2. Metoda la XXXXXXXXXXX" << endl;
-    cout << "3. Metoda la YYYYYYYYYYY" << endl << endl;
+    std::cout << "1. Metoda la ala francez" << std::endl;
+    std::cout << "2. Metoda la XXXXXXXXXXX" << std::endl;
+    std::cout << "3. Metoda la YYYYYYYYYYY" << std::endl << std::endl;
     
-    cin >> option;
+    std::cin >> option;
     // string stringfe = "TEST";
     // path = "";
     Encrypt e;
@@ -87,8 +86,8 @@ void show_Options(){
             if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
                 system("cls"); // Golim ecranul pentru Windows, pentru Mac inca caut o solutie...
             }
-            cout << endl;
-            cout << e.caeser_Method(path, 5) << endl << endl;
+            std::cout << std::endl;
+            std::cout << e.caeser_Method(path, 5) << std::endl << std::endl;
             break;
             
         case '2':
@@ -103,13 +102,13 @@ void show_Options(){
 int main(int argc, const char * argv[]) {
 
     if (argc == 2){
-        cout << "Calea fisierului este: " << "'" << argv[1] << "'" << endl << endl << endl;
+        std::cout << "Calea fisierului este: " << "'" << argv[1] << "'" << std::endl << std::endl << std::endl;
         path = argv[1];
     }
     else{
-        cout << "Introduceti calea fisierului pentru criptare: " << endl << endl;
-        cin >> path;
-        cout << path;
+        std::cout << "Introduceti calea fisierului pentru criptare: " << std::endl << std::endl;
+        std::cin >> path;
+        std::cout << path;
     }
     while(1){
      show_Options();
