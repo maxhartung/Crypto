@@ -23,16 +23,24 @@ std::string getOsName()
 #endif
 }
 
-void save_File(std::string encrypted_string){
+void save_File(std::string encrypted_string, std::string encrypt_Method){
     std::string encrypted_file_path;
-    
     if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
-        encrypted_file_path = "C:\encrypted_file.txt";
-        // encrypted_file_path = "%USERPROFILE%\\Desktop\\encrypted_file.txt"; // Trebuie testat daca functioneaza corect si salveaza pe desktop fisierul
+        if (encrypt_Method == "caesar_Method") {
+            encrypted_file_path = "C:\encrypted_file_Cezar.txt";
+            // encrypted_file_path = "%USERPROFILE%\\Desktop\\encrypted_file.txt"; // Trebuie testat daca functioneaza corect si salveaza pe desktop fisierul
+        }
+        else
+            encrypted_file_path = "C:\encrypted_file_metoda_lui_peste_prajit.txt";
     }
     else if(getOsName() == "Mac OSX") {
-        encrypted_file_path = "/Users/max/encrypted_file.txt";
+        if (encrypt_Method == "caesar_Method") {
+            encrypted_file_path = "/Users/max/encrypted_file_Cezar.txt";
+        }
+        else
+            encrypted_file_path = "/Users/max/encrypted_file.txt";
     }
+  
     
     std::ofstream encrypted_file(encrypted_file_path);
     encrypted_file << encrypted_string << std::endl;
@@ -57,14 +65,18 @@ public:
                 else
                     result += char(int(current_File()[i]+s-97)%26 +97);
             }
-            save_File(result);
+            save_File(result,"caesar_Method");
             return "Fisierul a fost scris cu succes !";
         }
     
         std::string metoda_lui_peste_prajit(std::string text){
+            
+        std::string result = "";
         //TODO
-        return 0;
-    }
+        save_File(result,"caesar_Method");
+        return "Fisierul a fost scris cu succes !";
+            
+        }
     
 };
 
