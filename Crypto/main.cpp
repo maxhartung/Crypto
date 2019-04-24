@@ -3,7 +3,6 @@
 #include <sstream>
 
 std::string path;
-std::stringstream buffer;
 
 std::string getOsName()
 {
@@ -46,10 +45,11 @@ void save_File(std::string encrypted_string, std::string encrypt_Method){
     std::ofstream encrypted_file(encrypted_file_path);
     encrypted_file << encrypted_string << std::endl;
     encrypted_file.close();
-    buffer.flush(); // La salvare golim bufferul in care se afla datele necriptate pentru optimizarea memoriei cat si securitate.
+   // buffer.flush(); // La salvare golim bufferul in care se afla datele necriptate pentru optimizarea memoriei cat si securitate.
 }
 
 std::string current_File(){
+    std::stringstream buffer;
     buffer << std::ifstream(path).rdbuf();
     return buffer.str();
 }
