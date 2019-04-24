@@ -122,7 +122,8 @@ int main(int argc, const char * argv[]) {
     else{
         std::cout << "Introduceti calea fisierului pentru criptare: " << std::endl << std::endl;
         std::cin >> path;
-        std::cout << "Calea fisierului este: " << "'" << path << "'" << std::endl << std::endl << std::endl;    }
+        std::cout << "Calea fisierului este: " << "'" << path << "'" << std::endl << std::endl << std::endl;
+    }
     while(1){
      show_Options();
     }
