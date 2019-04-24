@@ -13,7 +13,7 @@ std::string getOsName()
 #elif __unix || __unix__
     return "Unix";
 #elif __APPLE__ || __MACH__
-    return "Mac OSX";
+    return "Mac OS X";
 #elif __linux__
     return "Linux";
 #elif __FreeBSD__
@@ -33,7 +33,7 @@ void save_File(std::string encrypted_string, std::string encrypt_Method){
         else
             encrypted_file_path = "C:\encrypted_file_metoda_lui_peste_prajit.txt";
     }
-    else if(getOsName() == "Mac OSX") {
+    else if(getOsName() == "Mac OS X") {
         if (encrypt_Method == "caesar_Method") {
             encrypted_file_path = "/Users/max/encrypted_file_Cezar.txt";
         }
@@ -82,7 +82,6 @@ public:
 
 void show_Options(){
     char option;
-
     std::cout << "Alegeti metoda de criptare: " << std::endl << std::endl;
     
     std::cout << "1. Metoda la ala francez" << std::endl;
@@ -95,11 +94,13 @@ void show_Options(){
     Encrypt e;
     switch (option) {
         case '1':
-            if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
-                system("cls"); // Golim ecranul pentru Windows, pentru Mac inca caut o solutie...
-            }
+            int i;
+            
             std::cout << std::endl;
-            std::cout << e.caeser_Method(path, 5) << std::endl << std::endl;
+            std::cout << "Introduceti numarul de deplasari: " << std::endl << std::endl;
+            std::cin  >> i;
+            std::cout << std::endl;
+            std::cout << e.caeser_Method(path, i) << std::endl << std::endl;
             break;
             
         case '2':
@@ -112,6 +113,7 @@ void show_Options(){
 }
 
 int main(int argc, const char * argv[]) {
+    std::cout << "Programul ruleaza pe platforma: " << getOsName() << std::endl;
 
     if (argc == 2){
         std::cout << "Calea fisierului este: " << "'" << argv[1] << "'" << std::endl << std::endl << std::endl;
