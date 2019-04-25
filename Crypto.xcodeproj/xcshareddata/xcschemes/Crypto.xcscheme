@@ -64,6 +64,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "/Users/max/file.txt"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "/Users/max/encrypted_file_Cezar_t.txt"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

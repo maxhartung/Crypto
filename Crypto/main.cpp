@@ -4,8 +4,7 @@
 
 std::string path;
 
-std::string getOsName()
-{
+std::string getOsName() {
 #ifdef _WIN32
     return "Windows 32-bit";
 #elif _WIN64
@@ -23,22 +22,28 @@ std::string getOsName()
 #endif
 }
 
-void save_File(std::string encrypted_string, std::string encrypt_Method){
+void save_File(std::string encrypted_string, std::string encrypt_Method, bool encrypt){
     std::string encrypted_file_path;
     if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
-        if (encrypt_Method == "caesar_Method") {
-            encrypted_file_path = "C:\encrypted_file_Cezar.txt";
+        if (encrypt_Method == "caesar_Method" && encrypt == true) {
+            encrypted_file_path = "C:\\encrypted_file_Cezar.txt";
             // encrypted_file_path = "%USERPROFILE%\\Desktop\\encrypted_file.txt"; // Trebuie testat daca functioneaza corect si salveaza pe desktop fisierul
+        }
+        else if (encrypt_Method == "caesar_Method" && encrypt == false)  {
+            encrypted_file_path = "C:\\decrypted_file_Cezar.txt";
         }
         else
             encrypted_file_path = "C:\encrypted_file_metoda_lui_peste_prajit.txt";
     }
-    else if(getOsName() == "Mac OS X") {
-        if (encrypt_Method == "caesar_Method") {
+    else if (getOsName() == "Mac OS X") {
+        if (encrypt_Method == "caesar_Method" && encrypt == true) {
             encrypted_file_path = "/Users/max/encrypted_file_Cezar.txt";
         }
+        else if (encrypt_Method == "caesar_Method" && encrypt == false)  {
+           encrypted_file_path = "/Users/max/decrypted_file_Cezar.txt";
+        }
         else
-            encrypted_file_path = "/Users/max/encrypted_file.txt";
+            encrypted_file_path = "/Users/max/encrypted_file_metoda_lui_peste_prajit.txt";
     }
   
     
@@ -65,42 +70,68 @@ public:
                 else
                     result += char(int(current_File()[i]+s-97)%26 +97);
             }
-            save_File(result,"caesar_Method");
-            return "Fisierul a fost scris cu succes !";
+            save_File(result,"caesar_Method", true);
+            return "Fisierul a fost criptat cu succes !";
         }
     
         std::string metoda_lui_peste_prajit(std::string text){
             
         std::string result = "";
         //TODO
-        save_File(result,"caesar_Method");
-        return "Fisierul a fost scris cu succes !";
+        save_File(result,"caesar_Method", true);
+        return "Fisierul a fost criptat cu succes !";
             
         }
     
 };
 
-void show_Options(){
+class Decrypt{
+public:
+    std::string caeser_Method(std::string text, int s){
+        std::string result = "";
+        s = 26 - s;
+        for (int i=0;i<current_File().length();i++)
+        {
+            if (isupper(current_File()[i]))
+                result += char(int(current_File()[i]+s-65)%26 +65);
+            else
+                result += char(int(current_File()[i]+s-97)%26 +97);
+        }
+        save_File(result,"caesar_Method", false);
+        return "Fisierul a fost decriptat cu succes !";
+    }
+    
+    std::string metoda_lui_peste_prajit(std::string text){
+        
+        std::string result = "";
+        //TODO
+        save_File(result,"caesar_Method", false);
+        return "Fisierul a fost decriptat cu succes !";
+        
+    }
+};
+
+void show_EncryptOptions(){
     char option;
-    std::cout << "Alegeti metoda de criptare: " << std::endl << std::endl;
+    std::cout << "Step 2: Alegeti metoda de criptare: " << std::endl << std::endl;
     
     std::cout << "1. Metoda la ala francez" << std::endl;
     std::cout << "2. Metoda la XXXXXXXXXXX" << std::endl;
     std::cout << "3. Metoda la YYYYYYYYYYY" << std::endl << std::endl;
     
     std::cin >> option;
-    // string stringfe = "TEST";
-    // path = "";
+    
     Encrypt e;
+    
     switch (option) {
         case '1':
-            int i;
+            int shift;
             
             std::cout << std::endl;
             std::cout << "Introduceti numarul de deplasari: " << std::endl << std::endl;
-            std::cin  >> i;
+            std::cin  >> shift;
             std::cout << std::endl;
-            std::cout << e.caeser_Method(path, i) << std::endl << std::endl;
+            std::cout << e.caeser_Method(path, shift) << std::endl << std::endl;
             break;
             
         case '2':
@@ -112,17 +143,68 @@ void show_Options(){
     }
 }
 
+void show_DecryptOptions(){
+    char option;
+    std::cout << "Step 2: Alegeti metoda de decriptare: " << std::endl << std::endl;
+
+    std::cout << "1. Metoda la ala francez" << std::endl;
+    std::cout << "2. Metoda la XXXXXXXXXXX" << std::endl;
+    std::cout << "3. Metoda la YYYYYYYYYYY" << std::endl << std::endl;
+    
+    std::cin >> option;
+    
+    Decrypt e;
+    
+    switch (option) {
+        case '1':
+            int shift;
+            
+            std::cout << std::endl;
+            std::cout << "Introduceti numarul de deplasari folosite la criptare: " << std::endl << std::endl;
+            std::cin  >> shift;
+            std::cout << std::endl;
+            std::cout << e.caeser_Method(path, shift) << std::endl << std::endl;
+            break;
+            
+        case '2':
+            //TODO
+            break;
+        case '3':
+            //TODO
+            break;
+    }
+}
+
+void show_Options(){
+    char option = '0';
+    
+    std::cout << "Step 1: Alegeti optiunea dorita: " << std::endl << std::endl;
+    std::cout << "1. Criptare" << std::endl;
+    std::cout << "2. Decriptare" << std::endl << std::endl;
+    std::cin >> option;
+    std::cout << std::endl;
+    switch (option) {
+            case '1':
+            show_EncryptOptions();
+            break;
+            case '2':
+            show_DecryptOptions();
+            break;
+    }
+}
+
+
 int main(int argc, const char * argv[]) {
-    std::cout << "Programul ruleaza pe platforma: " << getOsName() << std::endl;
+    std::cout << std::endl << "Programul ruleaza pe platforma: " << getOsName() << std::endl;
 
     if (argc == 2){
         std::cout << "Calea fisierului este: " << "'" << argv[1] << "'" << std::endl << std::endl << std::endl;
         path = argv[1];
     }
     else{
-        std::cout << "Introduceti calea fisierului pentru criptare: " << std::endl << std::endl;
+        std::cout << "Introduceti calea fisierului pentru criptare: ";
         std::cin >> path;
-        std::cout << "Calea fisierului este: " << "'" << path << "'" << std::endl << std::endl << std::endl;
+        std::cout << std::endl <<"Calea fisierului este: " << "'" << path << "'" << std::endl << std::endl << std::endl;
     }
     while(1){
      show_Options();
