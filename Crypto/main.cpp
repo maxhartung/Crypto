@@ -3,6 +3,12 @@
 #include <sstream>
 
 std::string path;
+std::string custom_path;
+
+enum encrypt_Methods{
+    caesar_Method,
+    
+}encrypt_Methods;
 
 std::string getOsName() {
 #ifdef _WIN32
@@ -22,35 +28,39 @@ std::string getOsName() {
 #endif
 }
 
-void save_File(std::string encrypted_string, std::string encrypt_Method, bool encrypt){
-    std::string encrypted_file_path;
+void save_File(std::string encrypted_string, enum encrypt_Methods, bool is_encrypt, std::string path){
+    std::ofstream encrypted_file(path);
+    encrypted_file << encrypted_string << std::endl;
+    encrypted_file.close();
+}
+
+void save_File(std::string encrypted_string, enum encrypt_Methods, bool is_encrypt){
+    std::string file_path;
     if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
-        if (encrypt_Method == "caesar_Method" && encrypt == true) {
-            encrypted_file_path = "C:\\encrypted_file_Cezar.txt";
-            // encrypted_file_path = "%USERPROFILE%\\Desktop\\encrypted_file.txt"; // Trebuie testat daca functioneaza corect si salveaza pe desktop fisierul
+        if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == true) {
+            file_path = "C:\\encrypted_file_Cezar.txt";
         }
-        else if (encrypt_Method == "caesar_Method" && encrypt == false)  {
-            encrypted_file_path = "C:\\decrypted_file_Cezar.txt";
+        else if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == false)  {
+            file_path = "C:\\decrypted_file_Cezar.txt";
         }
         else
-            encrypted_file_path = "C:\encrypted_file_metoda_lui_peste_prajit.txt";
+            file_path = "C:\encrypted_file_metoda_lui_peste_prajit.txt";
     }
     else if (getOsName() == "Mac OS X") {
-        if (encrypt_Method == "caesar_Method" && encrypt == true) {
-            encrypted_file_path = "/Users/max/encrypted_file_Cezar.txt";
+        if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == true) {
+            file_path = "/Users/max/encrypted_file_Cezar.txt";
         }
-        else if (encrypt_Method == "caesar_Method" && encrypt == false)  {
-           encrypted_file_path = "/Users/max/decrypted_file_Cezar.txt";
+        else if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == false)  {
+           file_path = "/Users/max/decrypted_file_Cezar.txt";
         }
         else
-            encrypted_file_path = "/Users/max/encrypted_file_metoda_lui_peste_prajit.txt";
+            file_path = "/Users/max/encrypted_file_metoda_lui_peste_prajit.txt";
     }
   
     
-    std::ofstream encrypted_file(encrypted_file_path);
+    std::ofstream encrypted_file(file_path);
     encrypted_file << encrypted_string << std::endl;
     encrypted_file.close();
-   // buffer.flush(); // La salvare golim bufferul in care se afla datele necriptate pentru optimizarea memoriei cat si securitate.
 }
 
 std::string current_File(){
@@ -61,7 +71,7 @@ std::string current_File(){
 
 class Encrypt{
 public:
-        std::string caeser_Method(std::string text, int s){
+        std::string caeser_Method(std::string text, int s, bool is_custom_path){
             std::string result = "";
             for (int i=0;i<current_File().length();i++)
             {
@@ -70,7 +80,13 @@ public:
                 else
                     result += char(int(current_File()[i]+s-97)%26 +97);
             }
-            save_File(result,"caesar_Method", true);
+            if (is_custom_path == false){
+                save_File(result,encrypt_Methods::caesar_Method, true);
+            }
+            else {
+                save_File(result,encrypt_Methods::caesar_Method, true, custom_path);
+                
+            }
             return "Fisierul a fost criptat cu succes !";
         }
     
@@ -78,7 +94,7 @@ public:
             
         std::string result = "";
         //TODO
-        save_File(result,"caesar_Method", true);
+        save_File(result,encrypt_Methods::caesar_Method, true);
         return "Fisierul a fost criptat cu succes !";
             
         }
@@ -87,7 +103,7 @@ public:
 
 class Decrypt{
 public:
-    std::string caeser_Method(std::string text, int s){
+    std::string caeser_Method(std::string text, int s, bool is_custom_path){
         std::string result = "";
         s = 26 - s;
         for (int i=0;i<current_File().length();i++)
@@ -97,7 +113,15 @@ public:
             else
                 result += char(int(current_File()[i]+s-97)%26 +97);
         }
-        save_File(result,"caesar_Method", false);
+        
+        if (is_custom_path == false){
+            save_File(result,encrypt_Methods::caesar_Method, false);
+        }
+        else {
+            save_File(result,encrypt_Methods::caesar_Method, false, custom_path);
+            
+        }
+        
         return "Fisierul a fost decriptat cu succes !";
     }
     
@@ -105,7 +129,7 @@ public:
         
         std::string result = "";
         //TODO
-        save_File(result,"caesar_Method", false);
+        save_File(result,encrypt_Methods::caesar_Method, false);
         return "Fisierul a fost decriptat cu succes !";
         
     }
@@ -126,12 +150,33 @@ void show_EncryptOptions(){
     switch (option) {
         case '1':
             int shift;
+            int default_path;
+            std::cout << std::endl;
+
+            std::cout << "Unde doriti sa salvati fisierul criptat ? " << std::endl << std::endl;
             
+            std::cout << "1. Cale implicita aka: " << path << std::endl;
+            std::cout << "2. Definesc o cale pentru fisier." << std::endl;
             std::cout << std::endl;
-            std::cout << "Introduceti numarul de deplasari: " << std::endl << std::endl;
-            std::cin  >> shift;
-            std::cout << std::endl;
-            std::cout << e.caeser_Method(path, shift) << std::endl << std::endl;
+            std::cin >> default_path;
+            switch (default_path) {
+                case 1:
+                    std::cout << std::endl;
+                    std::cout << "Introduceti numarul de deplasari: " << std::endl << std::endl;
+                    std::cin  >> shift;
+                    std::cout << std::endl;
+                    std::cout << e.caeser_Method(path, shift, false) << std::endl << std::endl;
+                    break;
+                case 2:
+                    std::cout << std::endl;
+                    std::cout << "Introduceti calea pentru fisier: " << std::endl << std::endl;
+                    std::cin  >> custom_path;
+                    std::cout << "Introduceti numarul de deplasari: " << std::endl << std::endl;
+                    std::cin  >> shift;
+                    std::cout << std::endl;
+                    std::cout << e.caeser_Method(path, shift, true) << std::endl << std::endl;
+                    break;
+            }
             break;
             
         case '2':
@@ -158,20 +203,45 @@ void show_DecryptOptions(){
     switch (option) {
         case '1':
             int shift;
+            int default_path;
+            std::string path_modified = path;
             
             std::cout << std::endl;
-            std::cout << "Introduceti numarul de deplasari folosite la criptare: " << std::endl << std::endl;
-            std::cin  >> shift;
-            std::cout << std::endl;
-            std::cout << e.caeser_Method(path, shift) << std::endl << std::endl;
-            break;
+            std::cout << "Unde doriti sa salvati fisierul decriptat ? " << std::endl << std::endl;
             
+            unsigned long position = path.find_last_of("/");
+            path_modified.replace(position + 1, 8 ,"decrypted_file.txt");
+        
+            std::cout << "1. Cale implicita aka: " << path_modified << std::endl;
+            std::cout << "2. Definesc o cale pentru fisier: " << std::endl;
+            std::cout << std::endl;
+            std::cin >> default_path;
+            switch (default_path){
+                case 1:{
+                    std::cout << std::endl;
+                    std::cout << "Introduceti numarul de deplasari folosite la criptare: " << std::endl << std::endl;
+                    std::cin  >> shift;
+                    std::cout << std::endl;
+                    std::cout << e.caeser_Method(path, shift, false) << std::endl << std::endl;
+                    break;
+                }
+                case 2:{
+                    std::cout << std::endl;
+                    std::cout << "Introduceti calea pentru fisier: " << std::endl << std::endl;
+                    std::cin  >> custom_path;
+                    std::cout << "Introduceti numarul de deplasari folosite la criptare: " << std::endl << std::endl;
+                    std::cin  >> shift;
+                    std::cout << std::endl;
+                    std::cout << e.caeser_Method(path, shift, true) << std::endl << std::endl;
+                    break;
+            }
         case '2':
             //TODO
             break;
         case '3':
             //TODO
             break;
+            }
     }
 }
 
