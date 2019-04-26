@@ -153,7 +153,7 @@ void show_EncryptOptions(){
             int default_path;
             std::cout << std::endl;
 
-            std::cout << "Unde doriti sa salvati fisierul criptat ? " << std::endl << std::endl;
+            std::cout << "Step 3: Unde doriti sa salvati fisierul criptat ? " << std::endl << std::endl;
             
             std::cout << "1. Cale implicita aka: " << path << std::endl;
             std::cout << "2. Definesc o cale pentru fisier." << std::endl;
@@ -207,7 +207,7 @@ void show_DecryptOptions(){
             std::string path_modified = path;
             
             std::cout << std::endl;
-            std::cout << "Unde doriti sa salvati fisierul decriptat ? " << std::endl << std::endl;
+            std::cout << "Step 3: Unde doriti sa salvati fisierul decriptat ? " << std::endl << std::endl;
             
             unsigned long position = path.find_last_of("/");
             path_modified.replace(position + 1, 8 ,"decrypted_file.txt");
