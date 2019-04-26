@@ -69,6 +69,40 @@ std::string current_File(){
     return buffer.str();
 }
 
+class CheckInput {
+public:
+    bool is_Correct_3(char userInput){
+        bool is_valid = false;
+        if (userInput == '1' || userInput == '2' || userInput == '3' ){
+            return is_valid = true;
+        }
+        else{
+            return is_valid;
+        }
+    }
+    
+    bool is_Correct_2(char userInput){
+        bool is_valid = false;
+        if (userInput == '1' || userInput == '2'){
+            return is_valid = true;
+        }
+        else{
+            return is_valid;
+        }
+    }
+        bool is_Correct_int_2(int userInput){
+            bool is_valid = false;
+            if (userInput == 1 || userInput == 2){
+                return is_valid = true;
+            }
+            else{
+                return is_valid;
+    }
+}
+};
+
+
+
 class Encrypt{
 public:
         std::string caeser_Method(std::string text, int s, bool is_custom_path){
@@ -150,7 +184,7 @@ void show_EncryptOptions(){
     switch (option) {
         case '1':
             int shift;
-            int default_path;
+            int option;
             std::cout << std::endl;
 
             std::cout << "Step 3: Unde doriti sa salvati fisierul criptat ? " << std::endl << std::endl;
@@ -158,8 +192,9 @@ void show_EncryptOptions(){
             std::cout << "1. Cale implicita aka: " << path << std::endl;
             std::cout << "2. Definesc o cale pentru fisier." << std::endl;
             std::cout << std::endl;
-            std::cin >> default_path;
-            switch (default_path) {
+            std::cin >> option;
+            
+            switch (option) {
                 case 1:
                     std::cout << std::endl;
                     std::cout << "Introduceti numarul de deplasari: " << std::endl << std::endl;
@@ -189,7 +224,11 @@ void show_EncryptOptions(){
 }
 
 void show_DecryptOptions(){
+    
     char option;
+    Decrypt e;
+    CheckInput CheckInput_obj;
+    
     std::cout << "Step 2: Alegeti metoda de decriptare: " << std::endl << std::endl;
 
     std::cout << "1. Metoda la ala francez" << std::endl;
@@ -198,12 +237,17 @@ void show_DecryptOptions(){
     
     std::cin >> option;
     
-    Decrypt e;
+    while (CheckInput_obj.is_Correct_3(option) != true) {
+        std::cout << std::endl;
+        std::cout << "Error: Introduceti o optiune valida ! " << std::endl << std::endl;
+        show_DecryptOptions();
+    }
+    
     
     switch (option) {
         case '1':
             int shift;
-            int default_path;
+            int option;
             std::string path_modified = path;
             
             std::cout << std::endl;
@@ -215,8 +259,8 @@ void show_DecryptOptions(){
             std::cout << "1. Cale implicita aka: " << path_modified << std::endl;
             std::cout << "2. Definesc o cale pentru fisier: " << std::endl;
             std::cout << std::endl;
-            std::cin >> default_path;
-            switch (default_path){
+            std::cin >> option;
+            switch (option){
                 case 1:{
                     std::cout << std::endl;
                     std::cout << "Introduceti numarul de deplasari folosite la criptare: " << std::endl << std::endl;
@@ -246,12 +290,20 @@ void show_DecryptOptions(){
 }
 
 void show_Options(){
-    char option = '0';
+    char option;
+    CheckInput CheckInput_obj;
     
     std::cout << "Step 1: Alegeti optiunea dorita: " << std::endl << std::endl;
     std::cout << "1. Criptare" << std::endl;
     std::cout << "2. Decriptare" << std::endl << std::endl;
     std::cin >> option;
+    
+   while (CheckInput_obj.is_Correct_2(option) != true) {
+       std::cout << std::endl;
+       std::cout << "Error: Introduceti o optiune valida ! " << std::endl << std::endl;
+       show_Options();
+   }
+    
     std::cout << std::endl;
     switch (option) {
             case '1':
