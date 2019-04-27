@@ -7,6 +7,7 @@ std::string custom_path;
 
 enum encrypt_Methods{
     caesar_Method,
+    scytale_Method
     
 }encrypt_Methods;
 
@@ -50,11 +51,14 @@ void save_File(std::string encrypted_string, enum encrypt_Methods, bool is_encry
         if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == true) {
             file_path = "/Users/max/encrypted_file_Cezar.txt";
         }
+        else if (encrypt_Methods == encrypt_Methods::scytale_Method && is_encrypt == true) {
+            file_path = "/Users/max/encrypted_scytale_Method.txt";
+            
+        }
         else if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == false)  {
            file_path = "/Users/max/decrypted_file_Cezar.txt";
         }
-        else
-            file_path = "/Users/max/encrypted_file_metoda_lui_peste_prajit.txt";
+        
     }
   
     
@@ -124,15 +128,77 @@ public:
             return "Fisierul a fost criptat cu succes !";
         }
     
-        std::string metoda_lui_peste_prajit(std::string text){
-            
+    std::string scytale_Method(std::string text, bool is_custom_path){
+        int i,j,k,turns,code[100][1000],col;
+        unsigned long len;
+        char str[1000];
         std::string result = "";
-        //TODO
-        save_File(result,encrypt_Methods::caesar_Method, true);
-        return "Fisierul a fost criptat cu succes !";
+
+        len = current_File().length();
+        turns = 20;
+        k=0;
+        
+        for(i=0;i<len;)
+        {
+            for(j=0;j<turns;j++)
+            {
+                code[k][j]=0;
+                i++;
+            }
+            k++;
+        }
+        k=0;
+        for(i=0;i<len;)
+        {
+            if(current_File()[i]!=' ')
+            {
+                for(j=0;j<turns;)
+                {
+                    if(i<=len)
+                    {
+                        if(str[i]!=' ')
+                        {
+                            code[k][j]=(int)current_File()[i];
+                            i++;
+                            j++;
+                        }
+                        else
+                        {
+                            i++;
+                        }
+                        
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    
+                }
+                k++;
+            }
+            else
+            {
+                i++;
+            }
+        }
+        col=k;
+        for(i=0;i<turns;i++)
+        {
+            for(j=0;j<col;j++)
+            {
+                if(code[j][i]!=0)
+                result +=std::to_string(code[i][j]);
+            }
+        }
+        if (is_custom_path == false){
+            save_File(result,encrypt_Methods::scytale_Method, true);
+        }
+        else {
+            save_File(result,encrypt_Methods::scytale_Method, true, custom_path);
             
         }
-    
+        
+return "Fisierul a fost criptat cu succes !";    }
 };
 
 class Decrypt{
@@ -174,7 +240,7 @@ void show_EncryptOptions(){
     std::cout << "Step 2: Alegeti metoda de criptare: " << std::endl << std::endl;
     
     std::cout << "1. Metoda la ala francez" << std::endl;
-    std::cout << "2. Metoda la XXXXXXXXXXX" << std::endl;
+    std::cout << "2. Metoda la de pe vremea lui Chioru'" << std::endl;
     std::cout << "3. Metoda la YYYYYYYYYYY" << std::endl << std::endl;
     
     std::cin >> option;
@@ -215,14 +281,34 @@ void show_EncryptOptions(){
             break;
             
         case '2':
-            //TODO
+            int option_scytale;
+            std::cout << std::endl;
+            
+            std::cout << "Step 3: Unde doriti sa salvati fisierul criptat ? " << std::endl << std::endl;
+            
+            std::cout << "1. Cale implicita aka: " << path << std::endl;
+            std::cout << "2. Definesc o cale pentru fisier." << std::endl;
+            std::cout << std::endl;
+            std::cin >> option_scytale;
+            
+            switch (option_scytale) {
+                case 1:
+                    std::cout << std::endl;
+                    std::cout << e.scytale_Method(path, false) << std::endl << std::endl;
+                    break;
+                case 2:
+                    std::cout << std::endl;
+                    std::cout << "Introduceti calea pentru fisier: " << std::endl << std::endl;
+                    std::cin  >> custom_path;
+                    std::cout << std::endl;
+                    std::cout << e.scytale_Method(path, true) << std::endl << std::endl;
             break;
         case '3':
             //TODO
             break;
     }
 }
-
+}
 void show_DecryptOptions(){
     
     char option;
