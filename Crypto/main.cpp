@@ -29,23 +29,37 @@ std::string getOsName() {
 #endif
 }
 
-void save_File(std::string encrypted_string, enum encrypt_Methods, bool is_encrypt, std::string path){
+void save_File_custom_path(std::string encrypted_string, std::string path, enum encrypt_Methods, bool is_encrypt){
     std::ofstream encrypted_file(path);
     encrypted_file << encrypted_string << std::endl;
     encrypted_file.close();
 }
 
-void save_File(std::string encrypted_string, enum encrypt_Methods, bool is_encrypt){
+void save_File(std::string encrypted_string, std::string decrypted_file_path, enum encrypt_Methods, bool is_encrypt){
+
     std::string file_path;
-    if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
+	
+   
+	if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
         if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == true) {
-            file_path = "C:\\encrypted_file_Cezar.txt";
+			file_path = "C:\\Users\\Public\\encrypted_file_Cezar.txt";
+			/*unsigned long position = decrypted_file_path.find_last_of("/");
+			temp_path.replace(position + 1, 8, "encrypted_file_Cezar.txt");
+			file_path = temp_path;*/
+
         }
-        else if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == false)  {
-            file_path = "C:\\decrypted_file_Cezar.txt";
+		else if (encrypt_Methods == encrypt_Methods::scytale_Method && is_encrypt == true) {
+			file_path = "C:\\Users\\Public\\encrypted_file_SCYTALE.txt";
+
+		}
+
+		else if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == false)  {
+			/*unsigned long position = decrypted_file_path.find_last_of("/");
+			temp_path.replace(position + 1, 8, "decrypted_file_Cezar.txt");
+			file_path = temp_path;*/
+			file_path = "C:\\Users\\Public\\decrypted_file_Cezar.txt";
         }
-        else
-            file_path = "C:\encrypted_file_metoda_lui_peste_prajit.txt";
+		
     }
     else if (getOsName() == "Mac OS X") {
         if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == true) {
@@ -111,20 +125,24 @@ class Encrypt{
 public:
         std::string caeser_Method(std::string text, int s, bool is_custom_path){
             std::string result = "";
+
+			
             for (int i=0;i<current_File().length();i++)
             {
+				std::cout << current_File()[i];
                 if (isupper(current_File()[i]))
                     result += char(int(current_File()[i]+s-65)%26 +65);
                 else
                     result += char(int(current_File()[i]+s-97)%26 +97);
             }
             if (is_custom_path == false){
-                save_File(result,encrypt_Methods::caesar_Method, true);
+                save_File(result, path, encrypt_Methods::caesar_Method, false);
             }
             else {
-                save_File(result,encrypt_Methods::caesar_Method, true, custom_path);
+                save_File_custom_path(result, custom_path,encrypt_Methods::caesar_Method, true);
                 
             }
+			std::cout << result;
             return "Fisierul a fost criptat cu succes !";
         }
     
@@ -191,10 +209,10 @@ public:
             }
         }
         if (is_custom_path == false){
-            save_File(result,encrypt_Methods::scytale_Method, true);
+            save_File(result,path,encrypt_Methods::scytale_Method, true);
         }
         else {
-            save_File(result,encrypt_Methods::scytale_Method, true, custom_path);
+			save_File_custom_path(result,custom_path,encrypt_Methods::scytale_Method, true);
             
         }
         
@@ -215,10 +233,10 @@ public:
         }
         
         if (is_custom_path == false){
-            save_File(result,encrypt_Methods::caesar_Method, false);
+            save_File(result, path,encrypt_Methods::caesar_Method, false);
         }
         else {
-            save_File(result,encrypt_Methods::caesar_Method, false, custom_path);
+			save_File_custom_path(result, custom_path,encrypt_Methods::caesar_Method, false);
             
         }
         
@@ -229,7 +247,7 @@ public:
         
         std::string result = "";
         //TODO
-        save_File(result,encrypt_Methods::caesar_Method, false);
+        save_File(result,path,encrypt_Methods::caesar_Method, false);
         return "Fisierul a fost decriptat cu succes !";
         
     }
