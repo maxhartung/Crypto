@@ -12,10 +12,11 @@ enum encrypt_Methods{
 }encrypt_Methods;
 
 std::string getOsName() {
-#ifdef _WIN32
-    return "Windows 32-bit";
-#elif _WIN64
+
+#ifdef _WIN64
     return "Windows 64-bit";
+#elif _WIN32
+    return "Windows 32-bit";
 #elif __unix || __unix__
     return "Unix";
 #elif __APPLE__ || __MACH__
@@ -41,18 +42,18 @@ void save_File(std::string encrypted_string, std::string decrypted_file_path, en
 	
    
 	if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
-        if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == true) {
+		 if (encrypt_Methods == encrypt_Methods::scytale_Method && is_encrypt == true) {
+		file_path = "C:\\Users\\Public\\encrypted_file_SCYTALE.txt";
+
+	}
+		 else	if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == true) {
 			file_path = "C:\\Users\\Public\\encrypted_file_Cezar.txt";
 			/*unsigned long position = decrypted_file_path.find_last_of("/");
 			temp_path.replace(position + 1, 8, "encrypted_file_Cezar.txt");
 			file_path = temp_path;*/
 
         }
-		else if (encrypt_Methods == encrypt_Methods::scytale_Method && is_encrypt == true) {
-			file_path = "C:\\Users\\Public\\encrypted_file_SCYTALE.txt";
-
-		}
-
+		
 		else if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == false)  {
 			/*unsigned long position = decrypted_file_path.find_last_of("/");
 			temp_path.replace(position + 1, 8, "decrypted_file_Cezar.txt");
@@ -148,12 +149,13 @@ public:
     
     std::string scytale_Method(std::string text, bool is_custom_path){
         int i,j,k,turns,code[100][1000],col;
-        unsigned long len;
+        int len;
         char str[1000];
         std::string result = "";
 
         len = current_File().length();
-        turns = 20;
+		std::cout << len;
+        turns = 3;
         k=0;
         
         for(i=0;i<len;)
@@ -205,7 +207,7 @@ public:
             for(j=0;j<col;j++)
             {
                 if(code[j][i]!=0)
-                result +=std::to_string(code[i][j]);
+                result += code[j][i];
             }
         }
         if (is_custom_path == false){
