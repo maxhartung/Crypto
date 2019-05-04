@@ -131,7 +131,7 @@ public:
 
 				// Asta e bun daca vrei sa separi caracterele si sa nu cripteze spatiul dintre ele.
 
-				std::cout << current_File()[i];
+				// std::cout << current_File()[i]; // verificam output-ul
                 if  (isupper(current_File()[i]))
                     result += char(int(current_File()[i]+s-65)%26 +65);
                 else
@@ -437,9 +437,7 @@ int main(int argc, const char * argv[]) {
         std::cin >> path;
         std::cout << std::endl <<"Calea fisierului este: " << "'" << path << "'" << std::endl << std::endl << std::endl;
     }
-    while(1){
      show_Options();
-    }
     return 0;
 }
 
