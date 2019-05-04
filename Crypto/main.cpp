@@ -5,12 +5,6 @@
 std::string path;
 std::string custom_path;
 
-enum encrypt_Methods{
-    caesar_Method,
-    scytale_Method
-    
-}encrypt_Methods;
-
 std::string getOsName() {
 
 #ifdef _WIN64
@@ -30,23 +24,23 @@ std::string getOsName() {
 #endif
 }
 
-void save_File_custom_path(std::string encrypted_string, std::string path, enum encrypt_Methods, bool is_encrypt){
+void save_File_custom_path(std::string encrypted_string, std::string path, std::string encrypt_Methods, bool is_encrypt){
     std::ofstream encrypted_file(path);
     encrypted_file << encrypted_string << std::endl;
     encrypted_file.close();
 }
 
-void save_File(std::string encrypted_string, std::string decrypted_file_path, enum encrypt_Methods, bool is_encrypt){
+void save_File(std::string encrypted_string, std::string decrypted_file_path, std::string encrypt_Methods, bool is_encrypt){
 
     std::string file_path;
 	
    
 	if (getOsName() == "Windows 64-bit" || getOsName() == "Windows 32-bit"){
-		 if (encrypt_Methods == encrypt_Methods::scytale_Method && is_encrypt == true) {
-		file_path = "C:\\Users\\Public\\encrypted_file_SCYTALE.txt";
+		 if (encrypt_Methods == "Scytale" && is_encrypt == true) {
+		file_path = "C:\\Users\\Public\\encrypted_file_Scytale.txt";
 
 	}
-		 else	if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == true) {
+		 else	if (encrypt_Methods == "Cezar" && is_encrypt == true) {
 			file_path = "C:\\Users\\Public\\encrypted_file_Cezar.txt";
 			/*unsigned long position = decrypted_file_path.find_last_of("/");
 			temp_path.replace(position + 1, 8, "encrypted_file_Cezar.txt");
@@ -54,7 +48,7 @@ void save_File(std::string encrypted_string, std::string decrypted_file_path, en
 
         }
 		
-		else if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == false)  {
+		else if (encrypt_Methods == "Cezar" && is_encrypt == false)  {
 			/*unsigned long position = decrypted_file_path.find_last_of("/");
 			temp_path.replace(position + 1, 8, "decrypted_file_Cezar.txt");
 			file_path = temp_path;*/
@@ -63,14 +57,14 @@ void save_File(std::string encrypted_string, std::string decrypted_file_path, en
 		
     }
     else if (getOsName() == "Mac OS X") {
-        if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == true) {
+        if (encrypt_Methods == "Cezar" && is_encrypt == true) {
             file_path = "/Users/max/encrypted_file_Cezar.txt";
         }
-        else if (encrypt_Methods == encrypt_Methods::scytale_Method && is_encrypt == true) {
+        else if (encrypt_Methods == "Scytale" && is_encrypt == true) {
             file_path = "/Users/max/encrypted_scytale_Method.txt";
             
         }
-        else if (encrypt_Methods == encrypt_Methods::caesar_Method && is_encrypt == false)  {
+        else if (encrypt_Methods == "Cezar" && is_encrypt == false)  {
            file_path = "/Users/max/decrypted_file_Cezar.txt";
         }
         
@@ -130,20 +124,26 @@ public:
 			
             for (int i=0;i<current_File().length();i++)
             {
+				/*if (current_File()[i] == ' ') {
+					result += " ";
+					i++;
+				}*/
+
+				// Asta e bun daca vrei sa separi caracterele si sa nu cripteze spatiul dintre ele.
+
 				std::cout << current_File()[i];
-                if (isupper(current_File()[i]))
+                if  (isupper(current_File()[i]))
                     result += char(int(current_File()[i]+s-65)%26 +65);
                 else
                     result += char(int(current_File()[i]+s-97)%26 +97);
             }
             if (is_custom_path == false){
-                save_File(result, path, encrypt_Methods::caesar_Method, false);
+                save_File(result, path, "Cezar", true);
             }
             else {
-                save_File_custom_path(result, custom_path,encrypt_Methods::caesar_Method, true);
+                save_File_custom_path(result, custom_path, "Cezar", true);
                 
             }
-			std::cout << result;
             return "Fisierul a fost criptat cu succes !";
         }
     
@@ -211,10 +211,10 @@ public:
             }
         }
         if (is_custom_path == false){
-            save_File(result,path,encrypt_Methods::scytale_Method, true);
+            save_File(result,path,"Scytale", true);
         }
         else {
-			save_File_custom_path(result,custom_path,encrypt_Methods::scytale_Method, true);
+			save_File_custom_path(result,custom_path, "Scytale", true);
             
         }
         
@@ -226,7 +226,7 @@ public:
     std::string caeser_Method(std::string text, int s, bool is_custom_path){
         std::string result = "";
         s = 26 - s;
-        for (int i=0;i<current_File().length();i++)
+        for (int i=0;i<current_File().length()-1;i++)
         {
             if (isupper(current_File()[i]))
                 result += char(int(current_File()[i]+s-65)%26 +65);
@@ -235,10 +235,10 @@ public:
         }
         
         if (is_custom_path == false){
-            save_File(result, path,encrypt_Methods::caesar_Method, false);
+            save_File(result, path, "Cezar", false);
         }
         else {
-			save_File_custom_path(result, custom_path,encrypt_Methods::caesar_Method, false);
+			save_File_custom_path(result, custom_path,"Cezar", false);
             
         }
         
@@ -249,7 +249,7 @@ public:
         
         std::string result = "";
         //TODO
-        save_File(result,path,encrypt_Methods::caesar_Method, false);
+        save_File(result,path,"Cezar", false);
         return "Fisierul a fost decriptat cu succes !";
         
     }
@@ -259,8 +259,8 @@ void show_EncryptOptions(){
     char option;
     std::cout << "Step 2: Alegeti metoda de criptare: " << std::endl << std::endl;
     
-    std::cout << "1. Metoda la ala francez" << std::endl;
-    std::cout << "2. Metoda la de pe vremea lui Chioru'" << std::endl;
+    std::cout << "1. Metoda lui Cezar" << std::endl;
+    std::cout << "2. Metoda lui Scytale" << std::endl;
     std::cout << "3. Metoda la YYYYYYYYYYY" << std::endl << std::endl;
     
     std::cin >> option;
@@ -275,8 +275,9 @@ void show_EncryptOptions(){
 
             std::cout << "Step 3: Unde doriti sa salvati fisierul criptat ? " << std::endl << std::endl;
             
-            std::cout << "1. Cale implicita aka: " << path << std::endl;
-            std::cout << "2. Definesc o cale pentru fisier." << std::endl;
+           // std::cout << "1. Cale implicita aka: " << path << std::endl;
+			std::cout << "1. Cale implicita" << std::endl;
+			std::cout << "2. Definesc o cale pentru fisier." << std::endl;
             std::cout << std::endl;
             std::cin >> option;
             
@@ -306,8 +307,9 @@ void show_EncryptOptions(){
             
             std::cout << "Step 3: Unde doriti sa salvati fisierul criptat ? " << std::endl << std::endl;
             
-            std::cout << "1. Cale implicita aka: " << path << std::endl;
-            std::cout << "2. Definesc o cale pentru fisier." << std::endl;
+          //  std::cout << "1. Cale implicita aka: " << path << std::endl;
+			std::cout << "1. Cale implicita" << std::endl;
+			std::cout << "2. Definesc o cale pentru fisier." << std::endl;
             std::cout << std::endl;
             std::cin >> option_scytale;
             
@@ -362,7 +364,8 @@ void show_DecryptOptions(){
             unsigned long position = path.find_last_of("/");
             path_modified.replace(position + 1, 8 ,"decrypted_file.txt");
         
-            std::cout << "1. Cale implicita aka: " << path_modified << std::endl;
+           // std::cout << "1. Cale implicita aka: " << path_modified << std::endl;
+			std::cout << "1. Cale implicita" << std::endl;
             std::cout << "2. Definesc o cale pentru fisier: " << std::endl;
             std::cout << std::endl;
             std::cin >> option;
