@@ -438,7 +438,7 @@ int main(int argc, const char * argv[]) {
         path = argv[1];
     }
     else{
-        std::cout << "Introduceti calea fisierului pentru criptare: ";
+        std::cout << "Introduceti calea fisierului pentru criptare/decriptare: ";
         std::cin >> path;
         std::cout << std::endl <<"Calea fisierului este: " << "'" << path << "'" << std::endl << std::endl << std::endl;
     }
