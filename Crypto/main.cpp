@@ -124,10 +124,10 @@ public:
 			
             for (int i=0;i<current_File().length();i++)
             {
-				/*if (current_File()[i] == ' ') {
+				if (current_File()[i] == ' ') {
 					result += " ";
 					i++;
-				}*/
+				}
 
 				// Asta e bun daca vrei sa separi caracterele si sa nu cripteze spatiul dintre ele.
 
@@ -228,6 +228,11 @@ public:
         s = 26 - s;
         for (int i=0;i<current_File().length()-1;i++)
         {
+			if (current_File()[i] == ' ') {
+				result += " ";
+				i++;
+			}
+
             if (isupper(current_File()[i]))
                 result += char(int(current_File()[i]+s-65)%26 +65);
             else
@@ -261,7 +266,7 @@ void show_EncryptOptions(){
     
     std::cout << "1. Metoda lui Cezar" << std::endl;
     std::cout << "2. Metoda lui Scytale" << std::endl;
-    std::cout << "3. Metoda la YYYYYYYYYYY" << std::endl << std::endl;
+    //std::cout << "3. Metoda la YYYYYYYYYYY" << std::endl << std::endl;
     
     std::cin >> option;
     
@@ -339,9 +344,9 @@ void show_DecryptOptions(){
     
     std::cout << "Step 2: Alegeti metoda de decriptare: " << std::endl << std::endl;
 
-    std::cout << "1. Metoda la ala francez" << std::endl;
-    std::cout << "2. Metoda la XXXXXXXXXXX" << std::endl;
-    std::cout << "3. Metoda la YYYYYYYYYYY" << std::endl << std::endl;
+    std::cout << "1. Metoda lui Cezar" << std::endl;
+    std::cout << "2. Metoda lui Scytale" << std::endl;
+   // std::cout << "3. Metoda la YYYYYYYYYYY" << std::endl << std::endl;
     
     std::cin >> option;
     
