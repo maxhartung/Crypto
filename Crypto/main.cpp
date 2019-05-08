@@ -124,10 +124,11 @@ public:
 			
             for (int i=0;i<current_File().length();i++)
             {
-				if (current_File()[i] == ' ') {
+				/*if (current_File()[i] == ' ') {
 					result += " ";
 					i++;
 				}
+				*/
 
 				// Asta e bun daca vrei sa separi caracterele si sa nu cripteze spatiul dintre ele.
 
@@ -228,10 +229,10 @@ public:
         s = 26 - s;
         for (int i=0;i<current_File().length()-1;i++)
         {
-			if (current_File()[i] == ' ') {
+			/*if (current_File()[i] == ' ') {
 				result += " ";
 				i++;
-			}
+			}*/
 
             if (isupper(current_File()[i]))
                 result += char(int(current_File()[i]+s-65)%26 +65);
